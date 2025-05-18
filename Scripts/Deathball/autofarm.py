@@ -13,13 +13,23 @@ NUMBERS_INTERVAL = 5          # Интервал для нажатия цифр 
 # Флаг для остановки потоков
 stop_threads = False
 
+def check_game_status() -> bool:
+    x1, y1 = 89, 319
+    x2, y2 = x1 + 1, y1 + 1
+    screenshot = ImageGrab.grab(bbox=(x1, y1, x2, y2))
+    pixel = screenshot.getpixel((0, 0))
+    
+    return pixel == (244, 47, 47) 
+
 def hold_w_loop():
     global stop_threads
     while not stop_threads:
-        kb.press('w')
-        time.sleep(W_HOLD_TIME)
-        kb.release('w')
-        time.sleep(0.01)
+        game_status = check_game_status()
+        if not game_status:
+            kb.press('w')
+            time.sleep(W_HOLD_TIME)
+            kb.release('w')
+            time.sleep(0.01)
 
 def check_color_trigger():
     global stop_threads
@@ -35,6 +45,8 @@ def check_color_trigger():
         
         time.sleep(0.01)
 
+
+ 
 def press_numbers_loop():
     """Каждые 5 сек нажимает 1,1,1, 2,2,2, 3,3,3. Для спеллов, за них дают опытц1"""
     global stop_threads

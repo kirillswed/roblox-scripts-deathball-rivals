@@ -4,22 +4,13 @@ import time
 from PIL import ImageGrab
 import threading
 
-# Настройки
-TARGET_COLOR = (151, 0, 0)    # RGB
-COLOR_TOLERANCE = 20          # Допуск цвета
-W_HOLD_TIME = 5               # Время удержания W (сек)
-NUMBERS_INTERVAL = 5          # Интервал для нажатия цифр (сек)
+from settings import TARGET_COLOR, COLOR_TOLERANCE, W_HOLD_TIME, NUMBERS_INTERVAL
+from game_status import check_game_status
+
+
 
 # Флаг для остановки потоков
 stop_threads = False
-
-def check_game_status() -> bool:
-    x1, y1 = 89, 319
-    x2, y2 = x1 + 1, y1 + 1
-    screenshot = ImageGrab.grab(bbox=(x1, y1, x2, y2))
-    pixel = screenshot.getpixel((0, 0))
-    
-    return pixel == (244, 47, 47) 
 
 def hold_w_loop():
     global stop_threads

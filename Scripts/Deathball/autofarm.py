@@ -15,12 +15,11 @@ stop_threads = False
 def hold_w_loop():
     global stop_threads
     while not stop_threads:
-        game_status = check_game_status()
-        if not game_status:
+        if not check_game_status():
             kb.press('w')
             time.sleep(W_HOLD_TIME)
             kb.release('w')
-            time.sleep(0.01)
+        time.sleep(0.01)
 
 def check_color_trigger():
     global stop_threads
@@ -42,15 +41,14 @@ def press_numbers_loop():
     """Каждые 5 сек нажимает 1,1,1, 2,2,2, 3,3,3. Для спеллов, за них дают опытц1"""
     global stop_threads
     while not stop_threads:
-        for number in [1, 1, 1, 2, 2, 2, 3, 3, 3]:
-            if stop_threads:
-                break
-            kb.press(str(number))
-            time.sleep(0.05)
-            kb.release(str(number))
-            time.sleep(0.05)
-        
-        kb.press('R')
+        if check_game_status():
+            for number in [1, 1, 1, 2, 2, 2, 3, 3, 3]:
+                if stop_threads:
+                    break
+                kb.press(str(number))
+                time.sleep(0.05)
+                kb.release(str(number)) 
+                time.sleep(0.05)
         time.sleep(NUMBERS_INTERVAL)
 def main():
     global stop_threads
